@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,6 +16,7 @@ import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -29,16 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                    .antMatchers("/").authenticated()
-                    .antMatchers("/home").hasAnyRole("CEO","CSRA","EMPLOYEE","CUSTOMER")
-                    .antMatchers("/logout").permitAll()
+                    .antMatchers("/*").authenticated()
                 .and()
                 .formLogin()
                     .loginPage("/login")
                     .permitAll()
                     .and()
                 .logout()
-                .logoutUrl("/logout")
                 .logoutSuccessUrl("/");
     }
 
@@ -48,7 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         auth.jdbcAuthentication()
                 .dataSource(dataSource)
                 .usersByUsernameQuery("select username,password,true from users where username = ?")
-                .authoritiesByUsernameQuery("select us.username, r.role from users us join user_role r on r.id = us.role_id where us.username = ?");
+                .authoritiesByUsernameQuery("select us.username, r.role from users us join user_role r on r.id = us.role_id where us.username = ?")
+                .rolePrefix("ROLE_");
     }
     @Bean
     public PasswordEncoder getPasswordEncoder(){
