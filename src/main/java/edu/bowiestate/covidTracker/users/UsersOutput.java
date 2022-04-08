@@ -16,8 +16,7 @@ public class UsersOutput {
     private String city;
     private String state;
     private String zip;
-    private String county;
-    private Long phone;
+    private String phone;
     private String email;
     private boolean vaccinated;
 
@@ -77,19 +76,11 @@ public class UsersOutput {
         this.state = state;
     }
 
-    public String getCounty() {
-        return county;
-    }
-
-    public void setCounty(String county) {
-        this.county = county;
-    }
-
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 

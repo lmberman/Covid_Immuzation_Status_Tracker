@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>User HomePage </title>
+</head>
+<body>
+<div> <h1> Your Covid Immunization Records </h1> </div>
+<div>
+    <h2> Existing Records </h2>
+    <table>
+        <thead>
+        <th> Vaccinated Date</th>
+        <th> Status </th>
+        </thead>
+        <tbody>
+        <th> Some date here</th>
+        <th> Your Status </th>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h2> Add new Immunization Record </h2>
+    <form th:action="@{/immunizationRecords/new}" method="post">
+        <div> <label> Vaccinated Date: <input required type="date" name="vaccinationDate"> </label></div>
+        <div> <label> Status: <input required type="text" name="vaccinated"> </label></div>
+        <div><input type="submit" value="Create"/></div>
+    </form>
+</div>
+</body>
+</html>

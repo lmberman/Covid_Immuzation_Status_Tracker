@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>New User Signup </title>
+</head>
+<body>
+<div th:if="${param.error}">
+    Invalid username and password.
+</div>
+<div th:if="${param.logout}">
+    You have been logged out.
+</div>
+<form th:action="@{/users/signup}" method="post">
+    <div><label> Firstname: <input required type="text" name="firstname"/> </label></div>
+    <div><label> Middle Initial: <input type="text" name="middle"/> </label></div>
+    <div><label> Lastname: <input required type="text" name="lastname"/> </label></div>
+    <div><label> Address: <input required type="text" name="address"/> </label></div>
+    <div><label> Address2: <input type="text" name="address2"/> </label></div>
+    <div><label> City: <input required type="text" name="city"/> </label></div>
+    <div><label> State: <input required type="text" name="state"/> </label></div>
+    <div><label> Zip: <input required type="text" name="zip"/> </label></div>
+    <div><label> Phone Number: <input required type="text" name="phone"/> </label></div>
+    <div><label> Email Address: <input required type="email" name="email"/> </label></div>
+    <br/>
+    <div><label> Username: <input required type="text" name="username"/> </label></div>
+    <div><label> Password: <input required type="text" name="password"/> </label></div>
+    <div><input type="submit" value="Signup"/></div>
+</form>
+</body>
+</html>

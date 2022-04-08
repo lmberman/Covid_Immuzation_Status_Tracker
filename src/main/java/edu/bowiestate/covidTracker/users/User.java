@@ -27,6 +27,9 @@ public class User implements Serializable {
     @Column(name="LASTNAME")
     private String lastname;
 
+    @Column(name="USERNAME")
+    private String username;
+
     @Column(name ="PASSWORD")
     private String password;
 
@@ -45,11 +48,8 @@ public class User implements Serializable {
     @Column(name = "ZIP")
     private String zip;
 
-    @Column(name = "COUNTRY")
-    private String country;
-
-    @Column(name = "PHONE", length = 10)
-    private Long phone;
+    @Column(name = "PHONE", length = 12)
+    private String phone;
 
     @Column(name = "EMAIL")
     private String email;
@@ -142,19 +142,11 @@ public class User implements Serializable {
         this.zip = zip;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
-    }
-
-    public Long getPhone() {
+    public String getPhone() {
         return phone;
     }
 
-    public void setPhone(Long phone) {
+    public void setPhone(String phone) {
         this.phone = phone;
     }
 
@@ -180,6 +172,14 @@ public class User implements Serializable {
 
     public void setVaccinationStatus(VaccinationStatus vaccinationStatus) {
         this.vaccinationStatus = vaccinationStatus;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public enum Role {

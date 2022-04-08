@@ -5,6 +5,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,6 +23,9 @@ public class TestResult {
 
     @Column(name = "STATUS")
     private char status;
+
+    @Column(name = "TEST_DATE")
+    private LocalDate testDate;
 
     @CreatedDate
     @Column(name = "CREATE_DATE")
@@ -69,5 +73,13 @@ public class TestResult {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public LocalDate getTestDate() {
+        return testDate;
+    }
+
+    public void setTestDate(LocalDate testDate) {
+        this.testDate = testDate;
     }
 }

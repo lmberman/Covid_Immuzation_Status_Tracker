@@ -15,8 +15,7 @@ public class UsersOutputBuilder {
     private String city;
     private String state;
     private String zip;
-    private String country;
-    private Long phone;
+    private String phone;
     private String email;
     private boolean vaccinated;
 
@@ -60,12 +59,7 @@ public class UsersOutputBuilder {
         return this;
     }
 
-    public UsersOutputBuilder withCountry(String country) {
-        this.country = country;
-        return this;
-    }
-
-    public UsersOutputBuilder withPhone(Long phone) {
+    public UsersOutputBuilder withPhone(String phone) {
         this.phone = phone;
         return this;
     }
@@ -94,7 +88,6 @@ public class UsersOutputBuilder {
                     .withCity(user.getCity())
                     .withState(user.getState())
                     .withZip(user.getZip())
-                    .withCountry(user.getCountry())
                     .withPhone(user.getPhone())
                     .withEmail(user.getEmail())
                     .withVaccinated(user.getVaccinationStatus().getVaccinated())
@@ -127,7 +120,6 @@ public class UsersOutputBuilder {
         usersOutput.setCity(city);
         usersOutput.setState(state);
         usersOutput.setZip(zip);
-        usersOutput.setCounty(country);
         usersOutput.setEmail(email);
         usersOutput.setPhone(phone);
         usersOutput.setVaccinated(vaccinated);

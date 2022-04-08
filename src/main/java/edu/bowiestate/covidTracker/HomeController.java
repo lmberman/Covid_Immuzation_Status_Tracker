@@ -1,13 +1,17 @@
 package edu.bowiestate.covidTracker;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 public class HomeController {
 
-    @GetMapping("/")
-    public String start() {
-        return "Hello this is the start";
+    @GetMapping({"/login","/"})
+    public String login() {
+        return "login";
+    }
+    @GetMapping("/home")
+    public String home() {
+        return "home";
     }
 }

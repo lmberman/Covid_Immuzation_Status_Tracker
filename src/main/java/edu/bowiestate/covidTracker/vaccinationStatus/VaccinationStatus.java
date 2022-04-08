@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Set;
 
@@ -21,6 +22,9 @@ public class VaccinationStatus {
     @Column(name = "VACCINATED")
     @Enumerated(EnumType.STRING)
     private VaccinateStatus vaccinated;
+
+    @Column(name = "VACCINATION_DATE")
+    private LocalDate vaccinationDate;
 
     @CreatedDate
     @Column(name = "CREATE_DATE")
@@ -60,5 +64,13 @@ public class VaccinationStatus {
 
     public void setUpdateDate(LocalDateTime updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public LocalDate getVaccinationDate() {
+        return vaccinationDate;
+    }
+
+    public void setVaccinationDate(LocalDate vaccinationDate) {
+        this.vaccinationDate = vaccinationDate;
     }
 }

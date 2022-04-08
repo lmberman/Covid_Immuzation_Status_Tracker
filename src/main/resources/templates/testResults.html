@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Covid Test Result Records </title>
+</head>
+<body>
+<div> <h1> Your Covid Test Result Records </h1> </div>
+<div>
+    <h2> Existing Records </h2>
+    <table>
+        <thead>
+            <th> Test Date</th>
+            <th> Status </th>
+            <th> Last Updated On</th>
+        </thead>
+        <tbody>
+            <th> Some date here</th>
+            <th> Your Status </th>
+            <th> The last time you updated it</th>
+        </tbody>
+    </table>
+</div>
+<div>
+    <h2> Add new Test Record </h2>
+    <form th:action="@{/testResults/new}" method="post">
+        <div> <label> Test Date: <input required type="date" name="testDate"> </label></div>
+        <div> <label> Result: <input required type="text" name="status"> </label></div>
+        <div><input type="submit" value="Create"/></div>
+    </form>
+</div>
+</body>
+</html>
