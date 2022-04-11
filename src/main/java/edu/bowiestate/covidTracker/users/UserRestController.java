@@ -71,6 +71,7 @@ public class UserRestController {
 
     @PreAuthorize("hasAnyRole('ROLE_CEO','ROLE_CSRA','ROLE_EMPLOYEE')")
     @GetMapping("/singleSearch")
+    @ResponseBody
     public UsersOutput findSingleUserByName(@RequestParam String firstname, @RequestParam String lastname, Authentication authentication) {
         Optional<GrantedAuthority> loggedInUserRole = (Optional<GrantedAuthority>) authentication.getAuthorities().stream().findFirst();
         if (loggedInUserRole.isPresent()) {
