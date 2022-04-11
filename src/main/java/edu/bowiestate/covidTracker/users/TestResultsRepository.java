@@ -1,4 +1,4 @@
-package edu.bowiestate.covidTracker.testResults;
+package edu.bowiestate.covidTracker.users;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

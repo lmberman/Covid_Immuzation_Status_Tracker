@@ -1,10 +1,11 @@
-package edu.bowiestate.covidTracker.vaccinationStatus;
+package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.users.User;
-import edu.bowiestate.covidTracker.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 

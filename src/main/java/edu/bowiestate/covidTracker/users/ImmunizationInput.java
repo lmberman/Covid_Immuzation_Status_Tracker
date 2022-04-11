@@ -1,4 +1,4 @@
-package edu.bowiestate.covidTracker.vaccinationStatus;
+package edu.bowiestate.covidTracker.users;
 
 import java.time.LocalDate;
 

@@ -1,20 +1,18 @@
 package edu.bowiestate.covidTracker.users;
 
 import edu.bowiestate.covidTracker.role.UserRole;
-import edu.bowiestate.covidTracker.testResults.TestResult;
-import edu.bowiestate.covidTracker.vaccinationStatus.VaccinationStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name="USERS")
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @TableGenerator(name = "User_Gen", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", initialValue = 5, allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.TABLE,  generator = "User_Gen")
     @Column(name="ID")
     private long id;
 

@@ -1,8 +1,5 @@
-package edu.bowiestate.covidTracker.testResults;
+package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.users.User;
-import edu.bowiestate.covidTracker.users.UserRestController;
-import edu.bowiestate.covidTracker.users.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;

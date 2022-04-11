@@ -1,8 +1,7 @@
 package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.vaccinationStatus.VaccinateStatus;
-import org.h2.engine.UserBuilder;
-import org.hibernate.criterion.Example;
+import edu.bowiestate.covidTracker.role.UserRole;
+import edu.bowiestate.covidTracker.role.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -12,10 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("users")
@@ -23,6 +20,9 @@ public class UserRestController {
 
     @Autowired
     private UsersRepository usersRepository;
+
+    @Autowired
+    private UserRoleRepository userRoleRepository;
 
     @PreAuthorize("hasAnyRole('ROLE_CEO','ROLE_CSRA','ROLE_EMPLOYEE')")
     @GetMapping(value = "/all")
@@ -45,10 +45,11 @@ public class UserRestController {
     }
 
     @PostMapping("/signup")
-    public String createUser(@Valid NewUserForm userForm, Model model, Errors errors) {
+    public String createUser(NewUserForm userForm, Model model, Errors errors) {
         if(errors.hasErrors()) {
             return "signup";
         }
+        UserRole userRole = userRoleRepository.findByRole("CUSTOMER");
         User newUser = new User();
         newUser.setUsername(userForm.getUsername());
         newUser.setPassword(userForm.getPassword());
@@ -62,18 +63,24 @@ public class UserRestController {
         newUser.setZip(userForm.getZip());
         newUser.setPhone(userForm.getPhone());
         newUser.setEmail(userForm.getEmail());
+        newUser.setUserRole(userRole);
 
         usersRepository.save(newUser);
         return "signup";
     }
 
-    @PutMapping
-    public void updateUser(@RequestParam User user) {
-        usersRepository.save(user);
-    }
-
-    @DeleteMapping
-    public void deleteUser(@RequestParam User user) {
-        usersRepository.delete(user);
+    @PreAuthorize("hasAnyRole('ROLE_CEO','ROLE_CSRA','ROLE_EMPLOYEE')")
+    @GetMapping("/singleSearch")
+    public UsersOutput findSingleUserByName(@RequestParam String firstname, @RequestParam String lastname, Authentication authentication) {
+        Optional<GrantedAuthority> loggedInUserRole = (Optional<GrantedAuthority>) authentication.getAuthorities().stream().findFirst();
+        if (loggedInUserRole.isPresent()) {
+            User user = usersRepository.findByFirstnameAndLastname(firstname, lastname);
+            if (User.Role.readOnlyRoles().contains(loggedInUserRole.get().getAuthority())) {
+                return new UsersOutputBuilder().buildForReadOnlyUser(user);
+            } else if (User.Role.editAllRole().equals(loggedInUserRole.get().getAuthority())) {
+                return new UsersOutputBuilder().buildForCSRAUser(user);
+            }
+        }
+        return null;
     }
 }

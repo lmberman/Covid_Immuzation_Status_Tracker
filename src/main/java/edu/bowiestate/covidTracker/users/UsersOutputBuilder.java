@@ -1,8 +1,5 @@
 package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.vaccinationStatus.VaccinateStatus;
-import edu.bowiestate.covidTracker.vaccinationStatus.VaccinationStatus;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,36 +73,44 @@ public class UsersOutputBuilder {
         return this;
     }
 
-    public List<UsersOutput> buildForCSRAUser(List<User> users) {
-        List<UsersOutput> outputs = new ArrayList<>();
-        for(User user: users) {
-            UsersOutput output = new UsersOutputBuilder()
-                    .withId(user.getId())
-                    .withFirstname(user.getFirstname())
-                    .withLastname(user.getLastname())
-                    .withAddress(user.getAddress())
-                    .withAddress2(user.getAddress2())
-                    .withCity(user.getCity())
-                    .withState(user.getState())
-                    .withZip(user.getZip())
-                    .withPhone(user.getPhone())
-                    .withEmail(user.getEmail())
-                    .withVaccinated(user.getVaccinationStatus().getVaccinated())
-                    .build();
-            outputs.add(output);
-        }
-        return outputs;
+
+
+    public UsersOutput buildForReadOnlyUser(User user) {
+        return new UsersOutputBuilder()
+                .withFirstname(user.getFirstname())
+                .withLastname(user.getLastname())
+                .withVaccinated(user.getVaccinationStatus().getVaccinated())
+                .build();
+    }
+
+    public UsersOutput buildForCSRAUser(User user) {
+        return new UsersOutputBuilder()
+                .withId(user.getId())
+                .withFirstname(user.getFirstname())
+                .withLastname(user.getLastname())
+                .withAddress(user.getAddress())
+                .withAddress2(user.getAddress2())
+                .withCity(user.getCity())
+                .withState(user.getState())
+                .withZip(user.getZip())
+                .withPhone(user.getPhone())
+                .withEmail(user.getEmail())
+                .withVaccinated(user.getVaccinationStatus().getVaccinated())
+                .build();
     }
 
     public List<UsersOutput> buildForReadOnlyUser(List<User> users) {
         List<UsersOutput> outputs = new ArrayList<>();
         for(User user: users) {
-            UsersOutput output = new UsersOutputBuilder()
-                    .withFirstname(user.getFirstname())
-                    .withLastname(user.getLastname())
-                    .withVaccinated(user.getVaccinationStatus().getVaccinated())
-                    .build();
-            outputs.add(output);
+            outputs.add(buildForReadOnlyUser(user));
+        }
+        return outputs;
+    }
+
+    public List<UsersOutput> buildForCSRAUser(List<User> users) {
+        List<UsersOutput> outputs = new ArrayList<>();
+        for(User user: users) {
+            outputs.add(buildForCSRAUser(user));
         }
         return outputs;
     }

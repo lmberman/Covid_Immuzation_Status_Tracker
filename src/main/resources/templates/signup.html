@@ -5,13 +5,17 @@
     <title>New User Signup </title>
 </head>
 <body>
+<h1> New Users Signup </h1>
+<h2> Please fill out the following fields with your information </h2>
 <div th:if="${param.error}">
     Invalid username and password.
 </div>
-<div th:if="${param.logout}">
-    You have been logged out.
-</div>
+
 <form th:action="@{/users/signup}" method="post">
+    <div><label> Username: <input required type="text" name="username"/> </label></div>
+    <div><label> Password: <input required type="text" name="password"/> </label></div>
+    <br/>
+
     <div><label> Firstname: <input required type="text" name="firstname"/> </label></div>
     <div><label> Middle Initial: <input type="text" name="middle"/> </label></div>
     <div><label> Lastname: <input required type="text" name="lastname"/> </label></div>
@@ -22,9 +26,8 @@
     <div><label> Zip: <input required type="text" name="zip"/> </label></div>
     <div><label> Phone Number: <input required type="text" name="phone"/> </label></div>
     <div><label> Email Address: <input required type="email" name="email"/> </label></div>
-    <br/>
-    <div><label> Username: <input required type="text" name="username"/> </label></div>
-    <div><label> Password: <input required type="text" name="password"/> </label></div>
+
+
     <div><input type="submit" value="Signup"/></div>
 </form>
 </body>

@@ -1,14 +1,11 @@
-package edu.bowiestate.covidTracker.vaccinationStatus;
+package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.users.User;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Set;
 
 @Entity
 @Table(name = "VACCINATION_STATUS")

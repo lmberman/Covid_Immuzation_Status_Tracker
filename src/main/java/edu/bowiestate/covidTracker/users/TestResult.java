@@ -1,4 +1,4 @@
-package edu.bowiestate.covidTracker.testResults;
+package edu.bowiestate.covidTracker.users;
 
 import edu.bowiestate.covidTracker.users.User;
 import org.springframework.data.annotation.CreatedDate;
