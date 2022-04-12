@@ -2,20 +2,19 @@ package edu.bowiestate.covidTracker.users;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDate;
+import java.util.Date;
 
 public class TestResultsInput {
 
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @DateTimeFormat(pattern = "YYYY-MM-DD")
-    private LocalDate testDate;
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date testDate;
     private char status;
 
-    public LocalDate getTestDate() {
+    public Date getTestDate() {
         return testDate;
     }
 
-    public void setTestDate(LocalDate testDate) {
+    public void setTestDate(Date testDate) {
         this.testDate = testDate;
     }
 

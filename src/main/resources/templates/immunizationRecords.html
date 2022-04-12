@@ -21,9 +21,16 @@
 </div>
 <div>
     <h2> Add new Immunization Record </h2>
-    <form th:action="@{/immunizationRecords/new}" method="post">
+    <form th:action="@{/user/immunizationRecords/new}" method="post">
         <div> <label> Vaccinated Date: <input required type="date" name="vaccinationDate"> </label></div>
-        <div> <label> Status: <input required type="text" name="vaccinated"> </label></div>
+        <div>
+            <label> Status :
+                <select name="vaccinated">
+                    <option value="true"> Fully Vax-ed </option>
+                    <option value="false"> Partially Vax-ed </option>
+                </select>
+            </label>
+        </div>
         <div><input type="submit" value="Create"/></div>
     </form>
 </div>

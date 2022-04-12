@@ -1,20 +1,20 @@
 package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.users.User;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "TEST_RESULTS")
+@EntityListeners(AuditingEntityListener.class)
 public class TestResult {
 
     @Id
-    @GeneratedValue
-    @Column(name = "ID")
+    @TableGenerator(name = "TestResult_Gen", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", initialValue = 2, allocationSize = 100)
+    @GeneratedValue(strategy = GenerationType.TABLE,  generator = "TestResult_Gen")
     private long id;
 
     @ManyToOne
@@ -25,15 +25,17 @@ public class TestResult {
     private char status;
 
     @Column(name = "TEST_DATE")
-    private LocalDate testDate;
+    private Date testDate;
 
     @CreatedDate
-    @Column(name = "CREATE_DATE")
-    private LocalDateTime createDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "CREATED_DATE", nullable = false)
+    private Date createdDate;
 
     @LastModifiedDate
-    @Column(name = "UPDATE_DATE")
-    private LocalDateTime updateDate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "LAST_MODIFIED_DATE", nullable = false)
+    private Date lastModifiedDate;
 
     public long getId() {
         return id;
@@ -59,27 +61,27 @@ public class TestResult {
         this.status = status;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
+    public Date getCreatedDate() {
+        return createdDate;
     }
 
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 
-    public LocalDateTime getUpdateDate() {
-        return updateDate;
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
     }
 
-    public void setUpdateDate(LocalDateTime updateDate) {
-        this.updateDate = updateDate;
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
-    public LocalDate getTestDate() {
+    public Date getTestDate() {
         return testDate;
     }
 
-    public void setTestDate(LocalDate testDate) {
+    public void setTestDate(Date testDate) {
         this.testDate = testDate;
     }
 }

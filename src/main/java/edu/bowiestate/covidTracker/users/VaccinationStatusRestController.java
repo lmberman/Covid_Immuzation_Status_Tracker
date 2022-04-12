@@ -1,11 +1,9 @@
 package edu.bowiestate.covidTracker.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -18,24 +16,29 @@ public class VaccinationStatusRestController {
         @Autowired
         private UsersRepository usersRepository;
 
-        @PostMapping(value = "/immunizationRecords/new")
-        public void createUserVaccination(@RequestParam ImmunizationInput immunizationInput, Principal principal){
+        @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+        @PostMapping(value = "/user/immunizationRecords/new")
+        @ResponseBody
+        public void createUserVaccination(ImmunizationInput immunizationInput, Principal principal){
             User user = usersRepository.findByUsername(principal.getName());
 
             VaccinationStatus vaccinationStatus = new VaccinationStatus();
             // think vaccinationStatus should link back to user so would have to search for user and link here
             vaccinationStatus.setVaccinated(immunizationInput.isVaccinated()? VaccinateStatus.Y: VaccinateStatus.N);
             vaccinationStatus.setVaccinationDate(immunizationInput.getVaccinationDate());
+
             user.setVaccinationStatus(vaccinationStatus);
             vaccinationStatusRepository.save(vaccinationStatus);
+            usersRepository.save(user);
         }
 
-        @PutMapping(value = "user/vaccinateUpdate")
+        @PutMapping(value = "/user/vaccinateUpdate")
         public void updateUserStatus(@RequestParam VaccinationStatus vaccinationStatus) {
             vaccinationStatusRepository.save(vaccinationStatus);
         }
 
-        @GetMapping("/immunizationRecords")
+        @PreAuthorize("hasRole('ROLE_CUSTOMER')")
+        @GetMapping("/user/immunizationRecords")
         public String getImmunizationRecords(Principal principal){
             // find vaccination records by user
             return "immunizationRecords";

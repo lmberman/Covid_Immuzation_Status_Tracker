@@ -1,10 +1,15 @@
 package edu.bowiestate.covidTracker.users;
 
-import java.time.LocalDate;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 public class ImmunizationInput {
+
     private boolean vaccinated;
-    private LocalDate vaccinationDate;
+
+    @DateTimeFormat(pattern = "yyyy-mm-dd")
+    private Date vaccinationDate;
 
     public boolean isVaccinated() {
         return vaccinated;
@@ -14,11 +19,11 @@ public class ImmunizationInput {
         this.vaccinated = vaccinated;
     }
 
-    public LocalDate getVaccinationDate() {
+    public Date getVaccinationDate() {
         return vaccinationDate;
     }
 
-    public void setVaccinationDate(LocalDate vaccinationDate) {
+    public void setVaccinationDate(Date vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
     }
 }
