@@ -2,47 +2,49 @@ package edu.bowiestate.covidTracker.users;
 
 import org.springframework.lang.Nullable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
+
 /**
  * Form to accept new user information
  */
 public class NewUserForm {
 
-    //@Pattern(regexp = "^[a-zA-Z0-9]{5,50}$", message = "username must be of 8 to 50 length with no special characters")
+    @Pattern(regexp = "^(?=[a-zA-Z0-9._]{8,50}$)(?!.*[_.]{2})[^_.].*[^_.]$", message = "username must be of 8 to 50 length with no special characters")
     private String username;
 
-   // @Pattern(regexp = "^((?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$&*])){8,30}$",
-            //message = "password must contain at least 1 uppercase, 1 lowercase, 1 special character and 1 digit ")
+    @Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z]).{8,30}$",
+            message = "password must contain at least 1 uppercase, 1 lowercase, 1 digit and between 8 and 30 characters ")
     private String password;
 
-   // @Pattern(regexp = "^[a-zA-Z]{1,100}", message = "firstname  is invalid")
+    @Pattern(regexp = "(^[a-z ,.'-]{1,100}+$/i)", message = "firstname  is invalid")
     private String firstname;
 
-   // @Nullable
+    @Nullable
     private Character middle;
 
-    //@Pattern(regexp = "^[a-zA-Z]{2,100}", message = "lastname  is invalid")
+    @Pattern(regexp = "(^[a-z ,.'-]{2,100}+$/i)", message = "lastname  is invalid")
     private String lastname;
 
-    //@Pattern(regexp = "^[a-zA-Z0-9 ]{2,255}", message = "address  is invalid")
+    @Pattern(regexp = "^(?=[a-zA-Z0-9._]{2,255}$)", message = "address  is invalid")
     private String address;
 
-    //@Pattern(regexp = "^[a-zA-Z0-9 #]{0,50}", message = "address2  is invalid")
+    @Pattern(regexp = "^\\s*\\S+(?:\\s+\\S+){2}$", message = "address2  is invalid")
     private String address2;
 
-    //@Pattern(regexp = "^[a-zA-Z ]{2,100}", message = "city  is invalid")
+    @Pattern(regexp = "^(?=[a-zA-Z]{2,100}$)", message = "address  is invalid")
     private String city;
 
-    //@Pattern(regexp = "^[a-zA-Z ]{2,100}", message = "state  is invalid")
+    @Pattern(regexp = "^(?:(A[KLRZ]|C[AOT]|D[CE]|FL|GA|HI|I[ADLN]|K[SY]|LA|M[ADEINOST]|N[CDEHJMVY]|O[HKR]|P[AR]|RI|S[CD]|T[NX]|UT|V[AIT]|W[AIVY]))$", message = "state  is invalid")
     private String state;
 
-    //@Pattern(regexp = "^[0-9 -]{5,10}$" , message = "Zip  is invalid")
+    @Pattern(regexp = "^(?!0{5})(\\d{5})(?!-?0{4})(-?\\d{4})?$", message = "zip  is invalid")
     private String zip;
 
-    //@Pattern(regexp = "^(\\+\\d{1,2}\\s)?\\(?\\d{3}\\)?[\\s.-]\\d{3}[\\s.-]\\d{4}$", message = "Phone  is invalid")
+    @Pattern(regexp = "^[2-9]\\d{2}-\\d{3}-\\d{4}$", message = "Phone  is invalid")
     private String phone;
 
-   // @Email(regexp = "^(?=.{1,64}@)[A-Za-z0-9_-]+(\\\\.[A-Za-z0-9_-]+)*@[^-][A-Za-z0-9-]" +
-            //"+(\\\\.[A-Za-z0-9-]+)*(\\\\.[A-Za-z]{2,})$", message = "Email is invalid")
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email is invalid")
     private String email;
 
     public String getFirstname() {

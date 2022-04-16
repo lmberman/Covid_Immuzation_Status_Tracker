@@ -8,7 +8,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
@@ -31,15 +30,21 @@ public class TestResultsRestController {
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @PostMapping("/new")
-    @ResponseBody
-    public void addNewTestResult(TestResultsInput testResultsInput, Principal principal) {
+    public String addNewTestResult(TestResultsInput testResultsInput, Principal principal, Model model) {
         User user = usersRepository.findByUsername(principal.getName());
 
-        TestResult testResult = new TestResult();
-        testResult.setUser(user);
-        testResult.setTestDate(testResultsInput.getTestDate());
-        testResult.setStatus(testResultsInput.getStatus());
-
-        testResultsRepository.save(testResult);
+        if(testResultsInput.getStatus() == 'U'
+                || testResultsInput.getStatus() == 'P'
+                || testResultsInput.getStatus() == 'N') {
+            TestResult testResult = new TestResult();
+            testResult.setUser(user);
+            testResult.setTestDate(testResultsInput.getTestDate());
+            testResult.setStatus(testResultsInput.getStatus());
+            testResultsRepository.save(testResult);
+            model.addAttribute("success", true);
+        } else {
+            // or throw error
+        }
+        return "testResults";
     }
 }

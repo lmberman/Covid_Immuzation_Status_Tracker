@@ -2,37 +2,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
-    <title>User HomePage </title>
+    <title> User Immunization Records </title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div> <h1> Your Covid Immunization Records </h1> </div>
-<div>
-    <h2> Existing Records </h2>
-    <table>
-        <thead>
-        <th> Vaccinated Date</th>
-        <th> Status </th>
-        </thead>
-        <tbody>
-        <th> Some date here</th>
-        <th> Your Status </th>
-        </tbody>
-    </table>
-</div>
-<div>
-    <h2> Add new Immunization Record </h2>
-    <form th:action="@{/user/immunizationRecords/new}" method="post">
-        <div> <label> Vaccinated Date: <input required type="date" name="vaccinationDate"> </label></div>
-        <div>
-            <label> Status :
-                <select name="vaccinated">
-                    <option value="true"> Fully Vax-ed </option>
-                    <option value="false"> Partially Vax-ed </option>
-                </select>
-            </label>
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container">
+        <a class="navbar-brand align-left" href="/home">Covid Immunization Status and Contact Tracker</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home}">Home </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/testResults}">Add Test Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/immunizationRecords}">Add Immunization Records
+                    <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title text-center text-bold">  Add new Immunization Record  </h1>
+    </div>
+    <div th:if="${success}" class="card-body">
+        <div  class="alert alert-success fade show" role="alert">
+            <strong>Sweet!</strong> The record saved successfully
         </div>
-        <div><input type="submit" value="Create"/></div>
-    </form>
+    </div>
+    <div class="card-body">
+        <form th:action="@{/user/immunizationRecords/new}" method="post">
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="vaccinationDate"> Vaccinated Date: </label>
+                    <input id="vaccinationDate" class="form-control" required type="date" name="vaccinationDate">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="vaccinated"> Status : </label>
+                    <select id="vaccinated" class="form-control" name="vaccinated">
+                        <option value="true"> Fully Vax-ed </option>
+                        <option value="false"> Partially Vax-ed </option>
+                    </select>
+                </div>
+            </div>
+                <button type="submit" class="btn btn-primary" value="Create"/>Save Immunization Record </button>
+        </form>
+    </div>
 </div>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
 </body>
 </html>

@@ -8,6 +8,8 @@ public class TestResultsInput {
 
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date testDate;
+
+    // should validate if P,N,U
     private char status;
 
     public Date getTestDate() {

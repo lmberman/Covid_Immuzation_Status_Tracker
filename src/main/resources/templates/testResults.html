@@ -3,39 +3,63 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>Covid Test Result Records </title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<div> <h1> Your Covid Test Result Records </h1> </div>
-<div>
-    <h2> Existing Records </h2>
-    <table>
-        <thead>
-            <th> Test Date</th>
-            <th> Status </th>
-            <th> Last Updated On</th>
-        </thead>
-        <tbody>
-            <th> Some date here</th>
-            <th> Your Status </th>
-            <th> The last time you updated it</th>
-        </tbody>
-    </table>
-</div>
-<div>
-    <h2> Add new Test Record </h2>
-    <form th:action="@{/user/testResults/new}" method="post">
-        <div> <label> Test Date: <input required type="date" name="testDate"> </label></div>
-        <div>
-            <label> Result:
-                <select name="status">
-                    <option value="P"> Positive </option>
-                    <option value="N"> Negative </option>
-                    <option value="U"> Results Pending </option>
-                </select>
-            </label>
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container">
+        <a class="navbar-brand align-left" href="/home">Covid Immunization Status and Contact Tracker</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home}">Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/testResults}">Add Test Results
+                    <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/user/immunizationRecords}">Add Immunization Records</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title text-center text-bold">  Add new Test Record </h1>
+    </div>
+    <div th:if="${success}" class="card-body">
+        <div  class="alert alert-success fade show" role="alert">
+            <strong>Sweet!</strong> The record saved successfully
         </div>
-        <div><input type="submit" value="Create"/></div>
-    </form>
+    </div>
+    <div class="card-body">
+        <form th:action="@{/user/testResults/new}" method="post">
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="testDate"> Last Test Date</label>
+                    <input type="date" class="form-control" id="testDate" name="testDate" placeholder="Date of your test">
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="testResult"> Test Result </label>
+                    <select class="form-control" name="status" id="testResult">
+                        <option value="P"> Positive </option>
+                        <option value="N"> Negative </option>
+                        <option value="U"> Results Pending </option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" value="Create"/>Save Test Record </button>
+        </form>
+    </div>
 </div>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
 </body>
 </html>

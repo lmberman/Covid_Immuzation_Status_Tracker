@@ -1,5 +1,5 @@
 package edu.bowiestate.covidTracker.users;
-import javax.validation.constraints.Pattern;
+//import javax.validation.constraints.Pattern;
 
 /**
  * Form to accept new user credentials and validate if the credentials are valid
@@ -10,7 +10,7 @@ import javax.validation.constraints.Pattern;
  */
 public class UsernameAvailabilityForm {
 
-    @Pattern(regexp = "^[a-zA-Z0-9]{5,50}$", message = "username must be of 8 to 50 length with no special characters")
+    //@Pattern(regexp = "^[a-zA-Z0-9]{5,50}$", message = "username must be of 8 to 50 length with no special characters")
     private String username;
 
     public String getUsername() {

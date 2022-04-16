@@ -24,13 +24,15 @@ public class VaccinationStatus {
     @Column(name = "VACCINATION_DATE")
     private Date vaccinationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "USER_ID", nullable = false)
+    private User user;
+
     @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_DATE", nullable = false)
     private Date createdDate;
 
     @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "LAST_MODIFIED_DATE", nullable = false)
     private Date lastModifiedDate;
 
@@ -72,5 +74,13 @@ public class VaccinationStatus {
 
     public void setVaccinationDate(Date vaccinationDate) {
         this.vaccinationDate = vaccinationDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

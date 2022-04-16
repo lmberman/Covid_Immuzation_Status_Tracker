@@ -56,9 +56,7 @@ public class User implements Serializable {
     @JoinColumn(name = "role_id")
     private UserRole userRole;
 
-    @OneToOne
-    @JoinColumn(name = "VACCINATION_STATUS_ID")
-    private VaccinationStatus vaccinationStatus;
+    // add created date and last modified date to this table
 
     public long getId() {
         return id;
@@ -162,14 +160,6 @@ public class User implements Serializable {
 
     public void setUserRole(UserRole userRole) {
         this.userRole = userRole;
-    }
-
-    public VaccinationStatus getVaccinationStatus() {
-        return vaccinationStatus;
-    }
-
-    public void setVaccinationStatus(VaccinationStatus vaccinationStatus) {
-        this.vaccinationStatus = vaccinationStatus;
     }
 
     public String getUsername() {

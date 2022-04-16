@@ -79,7 +79,7 @@ public class UsersOutputBuilder {
         return new UsersOutputBuilder()
                 .withFirstname(user.getFirstname())
                 .withLastname(user.getLastname())
-                .withVaccinated(user.getVaccinationStatus().getVaccinated())
+                //.withVaccinated(user.getVaccinationStatus().getVaccinated())
                 .build();
     }
 
@@ -95,7 +95,7 @@ public class UsersOutputBuilder {
                 .withZip(user.getZip())
                 .withPhone(user.getPhone())
                 .withEmail(user.getEmail())
-                .withVaccinated(user.getVaccinationStatus().getVaccinated())
+                //.withVaccinated(user.getVaccinationStatus().getVaccinated())
                 .build();
     }
 

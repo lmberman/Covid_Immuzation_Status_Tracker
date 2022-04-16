@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Admin Homepage </title>
+    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+<h1> Welcome! This is the Admin Homepage </h1>
+<div> <label> <a th:href="@{/logout}"> Logout </a> </label></div>
+<th:table >
+    <!-- User Covid Status Report table with search abilities -->
+
+</th:table>
+<div> <label> <a th:href="@{/reports/userCovidStatusReport}">  View/Update Test Results </a> </label></div>
+<div> <label> <a th:href="@{/user/immunizationRecords}"> View/Update Immunization Records </a> </label></div>
+</body>
+</html>

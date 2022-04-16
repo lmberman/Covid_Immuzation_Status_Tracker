@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <title>Admin Homepage </title>
+</head>
+<body>
+<h1> Welcome! This is the Employee Homepage </h1>
+<div> <label> <a th:href="@{/logout}"> Logout </a> </label></div>
+<div> <label> <a th:href="@{/user/testResults}">  View/Update Test Results </a> </label></div>
+<div> <label> <a th:href="@{/user/immunizationRecords}"> View/Update Immunization Records </a> </label></div>
+</body>
+</html>

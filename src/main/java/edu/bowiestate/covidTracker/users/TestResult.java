@@ -28,12 +28,10 @@ public class TestResult {
     private Date testDate;
 
     @CreatedDate
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "CREATED_DATE", nullable = false)
     private Date createdDate;
 
     @LastModifiedDate
-    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "LAST_MODIFIED_DATE", nullable = false)
     private Date lastModifiedDate;
 

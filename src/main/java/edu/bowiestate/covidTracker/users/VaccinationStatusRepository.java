@@ -1,7 +1,9 @@
 package edu.bowiestate.covidTracker.users;
 
-import edu.bowiestate.covidTracker.users.VaccinationStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
+
 public interface VaccinationStatusRepository extends JpaRepository<VaccinationStatus, Long> {
+    List<VaccinationStatus> findByUserId(Long userId);
 }
