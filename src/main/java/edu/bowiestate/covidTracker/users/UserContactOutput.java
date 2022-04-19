@@ -6,9 +6,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Output pojo for Users returned from the api
  * Information is populated on a need to know basis
  */
-public class UsersOutput {
+public class UserContactOutput {
 
-    private Long id;
     private String firstname;
     private String lastname;
     private String address;
@@ -18,15 +17,7 @@ public class UsersOutput {
     private String zip;
     private String phone;
     private String email;
-    private boolean vaccinated;
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstname() {
         return firstname;
@@ -45,7 +36,8 @@ public class UsersOutput {
     }
 
     public String getAddress() {
-        return address;
+
+        return address == null? "": address;
     }
 
     public void setAddress(String address) {
@@ -53,7 +45,8 @@ public class UsersOutput {
     }
 
     public String getAddress2() {
-        return address2;
+
+        return address2 == null? "": address2;
     }
 
     public void setAddress2(String address2) {
@@ -61,7 +54,8 @@ public class UsersOutput {
     }
 
     public String getCity() {
-        return city;
+
+        return city == null ? "": city;
     }
 
     public void setCity(String city) {
@@ -90,14 +84,6 @@ public class UsersOutput {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public boolean isVaccinated() {
-        return vaccinated;
-    }
-
-    public void setVaccinated(boolean vaccinated) {
-        this.vaccinated = vaccinated;
     }
 
     public String getZip() {

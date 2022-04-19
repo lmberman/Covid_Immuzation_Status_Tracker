@@ -2,17 +2,15 @@ package edu.bowiestate.covidTracker.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/user/testResults")
 public class TestResultsRestController {
 
     @Autowired
@@ -21,15 +19,21 @@ public class TestResultsRestController {
     @Autowired
     private UsersRepository usersRepository;
 
-    @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    @GetMapping()
-    public String getTestResults(Authentication authentication, Model model) {
+    @PreAuthorize("hasAnyRole('ROLE_CSRA','ROLE_CEO','ROLE_EMPLOYEE')")
+    @GetMapping("/user/{id}/testResults")
+    public String getImmunizationRecords(@PathVariable("id") long id, Model model) {
+        if(!usersRepository.findById(id).isPresent()){
+            model.addAttribute("error", "User unknown");
+            return "adminHome";
+        } else {
+            model.addAttribute("testResults",testResultsRepository.findByUserId(id));
+            return "adminViewUserTestResultRecords";
+        }
 
-        return "testResults";
     }
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-    @PostMapping("/new")
+    @PostMapping("/user/testResults/new")
     public String addNewTestResult(TestResultsInput testResultsInput, Principal principal, Model model) {
         User user = usersRepository.findByUsername(principal.getName());
 

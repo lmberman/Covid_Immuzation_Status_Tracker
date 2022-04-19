@@ -39,11 +39,17 @@ public class VaccinationStatusRestController {
             vaccinationStatusRepository.save(vaccinationStatus);
         }
 
-        @PreAuthorize("hasRole('ROLE_CUSTOMER')")
-        @GetMapping("/user/immunizationRecords")
-        public String getImmunizationRecords(Principal principal){
-            // find vaccination records by user
-            return "immunizationRecords";
+        @PreAuthorize("hasAnyRole('ROLE_CSRA','ROLE_CEO','ROLE_EMPLOYEE')")
+        @GetMapping("/user/{id}/immunizationRecords")
+        public String getImmunizationRecords(@PathVariable("id") long id, Model model) {
+            if(!usersRepository.findById(id).isPresent()){
+                model.addAttribute("error", "User unknown");
+                return "adminHome";
+            } else {
+                model.addAttribute("vaccinationRecords",vaccinationStatusRepository.findByUserId(id));
+                return "adminViewUserVaccineRecords";
+            }
+
         }
 
 

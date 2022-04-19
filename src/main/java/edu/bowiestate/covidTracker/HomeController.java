@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class HomeController {
@@ -45,11 +47,8 @@ public class HomeController {
                 model.addAttribute("vaccinationRecords", vaccinationStatusRepository.findByUserId(user.getId()));
                 return "home";
             } else {
-                model.addAttribute("users",usersRepository.findAll());
-                // get table of user with firstname and lastname
-                // add links for test results and vaccination records
-                // optional contact information link for CSRA
-                // optionally add test results, vaccination records, and contact information for CSRAs
+                List<User> customers = usersRepository.findAll().stream().filter(user-> user.getUserRole().getRole().equalsIgnoreCase(User.Role.ROLE_CUSTOMER.getNameWithoutPrefix())).collect(Collectors.toList());
+                model.addAttribute("users",customers);
                 return "adminHome";
             }
         }

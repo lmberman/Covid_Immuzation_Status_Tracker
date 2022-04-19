@@ -171,7 +171,16 @@ public class User implements Serializable {
     }
 
     public enum Role {
-        ROLE_CEO,ROLE_CSRA,ROLE_EMPLOYEE,ROLE_CUSTOMER;
+        ROLE_CEO("CEO"),
+        ROLE_CSRA("CSRA"),
+        ROLE_EMPLOYEE("EMPLOYEE"),
+        ROLE_CUSTOMER("CUSTOMER");
+
+        private String nameWithoutPrefix;
+
+        private Role(String nameWithoutPrefix) {
+            this.nameWithoutPrefix = nameWithoutPrefix;
+        }
 
         public static List<String> readOnlyRoles() {
             return List.of(ROLE_CEO.name(),ROLE_EMPLOYEE.name());
@@ -179,6 +188,14 @@ public class User implements Serializable {
 
         public static String editAllRole(){
             return ROLE_CSRA.name();
+        }
+
+        public String getNameWithoutPrefix() {
+            return nameWithoutPrefix;
+        }
+
+        public void setNameWithoutPrefix(String nameWithoutPrefix) {
+            this.nameWithoutPrefix = nameWithoutPrefix;
         }
     }
 }

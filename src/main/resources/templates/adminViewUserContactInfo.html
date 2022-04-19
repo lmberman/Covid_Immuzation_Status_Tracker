@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>User Contact Info </title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+<nav class="navbar navbar-expand-lg bg-dark">
+    <div class="container">
+        <a class="navbar-brand align-left" href="/home">Covid Immunization Status and Contact Tracker</a>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home}">Home
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/logout}">Logout</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<div class="card">
+    <div class="card-body">
+        <div>
+            <h2> User's Contact Information </h2>
+            <div class="table-responsive text-center">
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <th scope="col"> Name </th>
+                        <th scope="col"> Address </th>
+                        <th scope="col"> Phone Number </th>
+                        <th scope="col"> Email Address </th>
+                    </thead>
+                    <tbody>
+                        <td th:text="|${contact.firstname} ${contact.lastname}|"> name</td>
+                        <td th:text="|${contact.address} ${contact.address2}, ${contact.city} ${contact.state} ${contact.zip}|"> address </td>
+                        <td th:text="${contact.phone}"> phone</td>
+                        <td th:text="${contact.email}"> email</td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
+</body>
+</html>

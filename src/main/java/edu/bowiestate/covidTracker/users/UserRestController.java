@@ -29,21 +29,6 @@ public class UserRestController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @PreAuthorize("hasAnyRole('ROLE_CEO','ROLE_CSRA','ROLE_EMPLOYEE')")
-    @GetMapping(value = "/all")
-    @ResponseBody
-    public List<UsersOutput> getAllUsers(Authentication authentication) {
-        Optional<GrantedAuthority> loggedInUserRole = (Optional<GrantedAuthority>) authentication.getAuthorities().stream().findFirst();
-        if(loggedInUserRole.isPresent()) {
-            if(User.Role.readOnlyRoles().contains(loggedInUserRole.get().getAuthority())){
-                return new UsersOutputBuilder().buildForReadOnlyUser(usersRepository.findAll());
-            } else if(User.Role.editAllRole().equals(loggedInUserRole.get().getAuthority())) {
-                return new UsersOutputBuilder().buildForCSRAUser(usersRepository.findAll());
-            }
-        }
-        return null;
-    }
-
     @GetMapping("/new")
     public String signup(Model model){
         model.addAttribute("userForm", new NewUserForm());
@@ -74,24 +59,30 @@ public class UserRestController {
 
         usersRepository.save(newUser);
         model.addAttribute("signupSuccess", true);
-        return "signup";
+        return "login";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_CEO','ROLE_CSRA','ROLE_EMPLOYEE')")
-    @GetMapping("/singleSearch")
-    @ResponseBody
-    public UsersOutput findSingleUserByName(@RequestParam String firstname, @RequestParam String lastname, Authentication authentication) {
-        Optional<GrantedAuthority> loggedInUserRole = (Optional<GrantedAuthority>) authentication.getAuthorities().stream().findFirst();
-        if (loggedInUserRole.isPresent()) {
-            User user = usersRepository.findByFirstnameAndLastname(firstname, lastname);
-
-            List<UsersOutput> usersOutput = usersRepository.findByUserVaccinationStatus(firstname, lastname);
-            if (User.Role.readOnlyRoles().contains(loggedInUserRole.get().getAuthority())) {
-                return new UsersOutputBuilder().buildForReadOnlyUser(user);
-            } else if (User.Role.editAllRole().equals(loggedInUserRole.get().getAuthority())) {
-                return new UsersOutputBuilder().buildForCSRAUser(user);
-            }
+    @PreAuthorize("hasRole('ROLE_CSRA')")
+    @GetMapping("/{id}/contact")
+    public String findSingleUserByName(@PathVariable("id") Long id, Model model) {
+        Optional<User> user = usersRepository.findById(id);
+        if(!user.isPresent()){
+            model.addAttribute("error", "User unknown");
+            return "adminHome";
+        } else {
+            User existingUser = user.get();
+            UserContactOutput userContactOutput = new UserContactOutput();
+            userContactOutput.setFirstname(existingUser.getFirstname());
+            userContactOutput.setLastname(existingUser.getLastname());
+            userContactOutput.setAddress(existingUser.getAddress());
+            userContactOutput.setAddress2(existingUser.getAddress2());
+            userContactOutput.setCity(existingUser.getCity());
+            userContactOutput.setState(existingUser.getState());
+            userContactOutput.setZip(existingUser.getZip());
+            userContactOutput.setPhone(existingUser.getPhone());
+            userContactOutput.setEmail(existingUser.getEmail());
+            model.addAttribute("contact",userContactOutput);
+            return "adminViewUserContactInfo";
         }
-        return null;
     }
 }

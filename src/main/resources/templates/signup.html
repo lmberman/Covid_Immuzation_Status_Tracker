@@ -3,78 +3,135 @@
       xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <head>
     <title>New User Signup </title>
-    <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
-<h1> New Users Signup </h1>
-<h2> Please fill out the following fields with your information </h2>
-<div th:if="${param.error}">
-    Invalid username and password.
+<div class="card">
+    <div class="card-body">
+        <h1 class="card-title text-center text-bold">  New Users Signup </h1>
+    </div>
+    <div class="card-body">
+        <h2> Please fill out the following fields with your information </h2>
+        <div th:if="${param.error}">
+            Invalid username and password.
+        </div>
+    </div>
+    <div class="card-body">
+        <form th:action="@{/users/signup}" method="post" th:object="${userForm}">
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="username"> Username: </label>
+                    <input class="form-control" required id="username" type="text" th:field="*{username}" name="username"/>
+                    <span th:if="${#fields.hasErrors('username')}">
+                        <p th:errors="*{username}"> Invalid Username </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="password"> Password: </label>
+                    <input required class="form-control" id="password" type="password" th:field="*{password}" name="password"/>
+                </div>
+                <span th:if="${#fields.hasErrors('password')}">
+                    <p th:errors="*{password}"> Invalid Password </p>
+                </span>
+            </div>
+            <br/>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="firstname"> Firstname: </label>
+                    <input required class="form-control" id="firstname" type="text" th:field="*{firstname}" name="firstname"/>
+                    <span th:if="${#fields.hasErrors('firstname')}">
+                        <p th:errors="*{firstname}"> Invalid firstname </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="middle"> Middle Initial: </label>
+                    <input class="form-control" id="middle" type="text" name="middle"/>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="lastname"> Lastname: </label>
+                    <input required class="form-control" id="lastname" type="text" th:field="*{lastname}" name="lastname"/>
+                    <span th:if="${#fields.hasErrors('lastname')}">
+                        <p th:errors="*{lastname}"> Invalid lastname </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="address"> Address: </label>
+                    <input required class="form-control" id="address" type="text" th:field="*{address}" name="address"/>
+                    <span th:if="${#fields.hasErrors('address')}">
+                        <p th:errors="*{address}"> Invalid address </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="address2"> Address2: </label>
+                    <input type="text" class="form-control" id="address2" th:field="*{address2}" name="address2"/>
+                    <span th:if="${#fields.hasErrors('address2')}">
+                        <p th:errors="*{address2}"> Invalid address2 </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="city"> City: </label>
+                    <input required class="form-control" id="city" type="text" th:field="*{city}" name="city"/>
+                    <span th:if="${#fields.hasErrors('city')}">
+                        <p th:errors="*{city}"> Invalid city </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="state"> State: </label>
+                    <input required class="form-control" id="state" type="text" th:field="*{state}" name="state"/>
+                    <span th:if="${#fields.hasErrors('state')}">
+                        <p th:errors="*{state}"> Invalid state </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="zip"> Zip: </label>
+                    <input required class="form-control" id="zip" type="text" th:field="*{zip}" name="zip"/>
+                    <span th:if="${#fields.hasErrors('zip')}">
+                        <p th:errors="*{zip}"> Invalid zip </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="phone"> Phone Number: </label>
+                    <input required class="form-control" id="phone" type="text" th:field="*{phone}" name="phone"/>
+                    <span th:if="${#fields.hasErrors('phone')}">
+                        <p th:errors="*{phone}"> Invalid phone </p>
+                    </span>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <div class="form-group">
+                    <label for="email"> Email Address: </label>
+                    <input required class="form-control" id="email" type="text" th:field="*{email}" name="email"/>
+                    <span th:if="${#fields.hasErrors('email')}">
+                        <p th:errors="*{email}"> Invalid email </p>
+                    </span>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary" value="Signup"/> Sign up</button>
+        </form>
+    </div>
 </div>
 
-<div th:if="${param.signupSuccess}"> Signup completed successfully! </div>
-
-<form th:action="@{/users/signup}" method="post" th:object="${userForm}">
-    <div><label> Username: <input required type="text" th:field="*{username}" name="username"/> </label></div>
-    <span th:if="${#fields.hasErrors('username')}">
-        <p th:errors="*{username}"> Invalid Username </p>
-    </span>
-
-    <div><label> Password: <input required type="password" th:field="*{password}" name="password"/> </label></div>
-    <br/>
-
-    <span th:if="${#fields.hasErrors('password')}">
-        <p th:errors="*{password}"> Invalid Password </p>
-    </span>
-
-    <div><label> Firstname: <input required type="text" th:field="*{firstname}" name="firstname"/> </label></div>
-    <span th:if="${#fields.hasErrors('firstname')}">
-        <p th:errors="*{firstname}"> Invalid firstname </p>
-    </span>
-
-    <div><label> Middle Initial: <input type="text" name="middle"/> </label></div>
-
-    <div><label> Lastname: <input required type="text" th:field="*{lastname}" name="lastname"/> </label></div>
-    <span th:if="${#fields.hasErrors('lastname')}">
-        <p th:errors="*{lastname}"> Invalid lastname </p>
-    </span>
-
-    <div><label> Address: <input required type="text" th:field="*{address}" name="address"/> </label></div>
-    <span th:if="${#fields.hasErrors('address')}">
-        <p th:errors="*{address}"> Invalid address </p>
-    </span>
-
-    <div><label> Address2: <input type="text" th:field="*{address2}" name="address2"/> </label></div>
-    <span th:if="${#fields.hasErrors('address2')}">
-        <p th:errors="*{address2}"> Invalid address2 </p>
-    </span>
-
-    <div><label> City: <input required type="text" th:field="*{city}" name="city"/> </label></div>
-    <span th:if="${#fields.hasErrors('city')}">
-        <p th:errors="*{city}"> Invalid city </p>
-    </span>
-
-    <div><label> State: <input required type="text" th:field="*{state}" name="state"/> </label></div>
-    <span th:if="${#fields.hasErrors('state')}">
-        <p th:errors="*{state}"> Invalid state </p>
-    </span>
-
-    <div><label> Zip: <input required type="text" th:field="*{zip}" name="zip"/> </label></div>
-    <span th:if="${#fields.hasErrors('zip')}">
-        <p th:errors="*{zip}"> Invalid zip </p>
-    </span>
-
-    <div><label> Phone Number: <input required type="text" th:field="*{phone}" name="phone"/> </label></div>
-    <span th:if="${#fields.hasErrors('phone')}">
-        <p th:errors="*{phone}"> Invalid phone </p>
-    </span>
-
-    <div><label> Email Address: <input required type="text" th:field="*{email}" name="email"/> </label></div>
-    <span th:if="${#fields.hasErrors('email')}">
-        <p th:errors="*{email}"> Invalid email </p>
-    </span>
-
-    <div><input type="submit" value="Signup"/></div>
-</form>
+<script th:src="@{/webjars/jquery/3.6.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/2.9.3/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/5.1.3/js/bootstrap.min.js}"></script>
 </body>
 </html>
