@@ -35,8 +35,18 @@
         <h1 class="card-title text-center text-bold">  Add new Test Record </h1>
     </div>
     <div th:if="${success}" class="card-body">
-        <div  class="alert alert-success fade show" role="alert">
+        <div class="alert alert-success fade show" role="alert">
             <strong>Sweet!</strong> The record saved successfully
+        </div>
+    </div>
+    <div th:if="${dailyLimitExceeded}" class="card-body">
+        <div class="alert alert-warning fade show" role="alert">
+            <strong>Uh Oh!</strong> You have exceeded your daily reporting limit
+        </div>
+    </div>
+    <div th:if="${recordAlreadyExists}" class="card-body">
+        <div class="alert alert-warning fade show" role="alert">
+            <strong>Uh Oh!</strong> Looks like you've already reported this test
         </div>
     </div>
     <div class="card-body">
@@ -44,7 +54,7 @@
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="testDate"> Last Test Date</label>
-                    <input type="date" class="form-control" id="testDate" name="testDate" placeholder="Date of your test">
+                    <input type="date" class="form-control" id="testDate" name="testDate" placeholder="Date of your test" max="${#dates.formatISO(today)}">
                 </div>
             </div>
             <div class="input-group mb-3">

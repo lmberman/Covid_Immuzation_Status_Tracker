@@ -43,7 +43,7 @@ public class HomeController {
             if(role.equals(User.Role.ROLE_CUSTOMER.name())){
                 User user = usersRepository.findByUsername(authentication.getName());
                 model.addAttribute("name", user.getFirstname());
-                model.addAttribute("testRecords", testResultsRepository.findByUserId(user.getId()));
+                model.addAttribute("testRecords", testResultsRepository.findByIdUserId(user.getId()));
                 model.addAttribute("vaccinationRecords", vaccinationStatusRepository.findByUserId(user.getId()));
                 return "home";
             } else {

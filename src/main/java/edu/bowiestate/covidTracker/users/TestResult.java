@@ -12,20 +12,16 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class TestResult {
 
-    @Id
-    @TableGenerator(name = "TestResult_Gen", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", initialValue = 2, allocationSize = 100)
-    @GeneratedValue(strategy = GenerationType.TABLE,  generator = "TestResult_Gen")
-    private long id;
+    @EmbeddedId
+    private TestResultId id;
 
+    @MapsId("userId")
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
 
     @Column(name = "STATUS")
     private char status;
-
-    @Column(name = "TEST_DATE")
-    private Date testDate;
 
     @CreatedDate
     @Column(name = "CREATED_DATE", nullable = false)
@@ -35,30 +31,15 @@ public class TestResult {
     @Column(name = "LAST_MODIFIED_DATE", nullable = false)
     private Date lastModifiedDate;
 
-    public long getId() {
-        return id;
+    public TestResult() {
+
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
+    public TestResult(User user, char status, Date testDate){
         this.user = user;
-    }
-
-    public char getStatus() {
-        return status;
-    }
-
-    public void setStatus(char status) {
+        this.id = new TestResultId(user.getId(),testDate);
         this.status = status;
     }
-
     public Date getCreatedDate() {
         return createdDate;
     }
@@ -75,11 +56,41 @@ public class TestResult {
         this.lastModifiedDate = lastModifiedDate;
     }
 
-    public Date getTestDate() {
-        return testDate;
+    public TestResultId getTestResultId() {
+        return id;
     }
 
-    public void setTestDate(Date testDate) {
-        this.testDate = testDate;
+    public void setTestResultId(TestResultId testResultId) {
+        this.id = testResultId;
     }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getStatus() {
+        switch(status){
+            case 'P':
+                return "Positive";
+            case 'N':
+                return "Negative";
+            case 'U':
+                return "Pending";
+            default:
+                return null;
+        }
+    }
+
+    public char getStatusChar() {
+        return status;
+    }
+
+    public Date getTestDate() {
+        return id.getTestDate();
+    }
+
+    public void setStatus(char status) {
+        this.status = status;
+    }
+
 }

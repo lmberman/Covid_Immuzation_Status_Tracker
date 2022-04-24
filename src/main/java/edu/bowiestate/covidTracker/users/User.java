@@ -5,6 +5,7 @@ import edu.bowiestate.covidTracker.role.UserRole;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name="USERS")
@@ -18,9 +19,6 @@ public class User implements Serializable {
 
     @Column(name="FIRSTNAME")
     private String firstname;
-
-    @Column(name="MIDDLE")
-    private Character middle;
 
     @Column(name="LASTNAME")
     private String lastname;
@@ -72,14 +70,6 @@ public class User implements Serializable {
 
     public void setFirstname(String firstname) {
         this.firstname = firstname;
-    }
-
-    public Character getMiddle() {
-        return middle;
-    }
-
-    public void setMiddle(Character middle) {
-        this.middle = middle;
     }
 
     public String getLastname() {
@@ -170,6 +160,19 @@ public class User implements Serializable {
         this.username = username;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id == user.id && firstname.equals(user.firstname) && lastname.equals(user.lastname) && username.equals(user.username) && password.equals(user.password) && address.equals(user.address) && Objects.equals(address2, user.address2) && city.equals(user.city) && state.equals(user.state) && zip.equals(user.zip) && phone.equals(user.phone) && email.equals(user.email) && userRole.equals(user.userRole);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstname, lastname, username, password, address, address2, city, state, zip, phone, email, userRole);
+    }
+
     public enum Role {
         ROLE_CEO("CEO"),
         ROLE_CSRA("CSRA"),
@@ -178,7 +181,7 @@ public class User implements Serializable {
 
         private String nameWithoutPrefix;
 
-        private Role(String nameWithoutPrefix) {
+        Role(String nameWithoutPrefix) {
             this.nameWithoutPrefix = nameWithoutPrefix;
         }
 

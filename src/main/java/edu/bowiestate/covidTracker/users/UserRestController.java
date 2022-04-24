@@ -31,35 +31,38 @@ public class UserRestController {
 
     @GetMapping("/new")
     public String signup(Model model){
-        model.addAttribute("userForm", new NewUserForm());
+        model.addAttribute("newUserForm", new NewUserForm());
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String createUser(@Valid NewUserForm userForm, Model model, BindingResult bindingResult) {
+    public String createUser(@Valid NewUserForm newUserForm, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             return "signup";
         }
+        if(usersRepository.findByUsername(newUserForm.getUsername()) != null) {
+            model.addAttribute("userAlreadyExists", true);
+        } else {
+            UserRole userRole = userRoleRepository.findByRole("CUSTOMER");
+            User newUser = new User();
+            newUser.setUsername(newUserForm.getUsername());
+            newUser.setPassword(passwordEncoder.encode(newUserForm.getPassword()));
+            newUser.setFirstname(newUserForm.getFirstname());
+            newUser.setLastname(newUserForm.getLastname());
+            newUser.setAddress(newUserForm.getAddress());
+            newUser.setAddress2(newUserForm.getAddress2());
+            newUser.setCity(newUserForm.getCity());
+            newUser.setState(newUserForm.getState());
+            newUser.setZip(newUserForm.getZip());
+            newUser.setPhone(newUserForm.getPhone());
+            newUser.setEmail(newUserForm.getEmail());
+            newUser.setUserRole(userRole);
 
-        UserRole userRole = userRoleRepository.findByRole("CUSTOMER");
-        User newUser = new User();
-        newUser.setUsername(userForm.getUsername());
-        newUser.setPassword(passwordEncoder.encode(userForm.getPassword()));
-        newUser.setFirstname(userForm.getFirstname());
-        newUser.setMiddle(userForm.getMiddle());
-        newUser.setLastname(userForm.getLastname());
-        newUser.setAddress(userForm.getAddress());
-        newUser.setAddress2(userForm.getAddress2());
-        newUser.setCity(userForm.getCity());
-        newUser.setState(userForm.getState());
-        newUser.setZip(userForm.getZip());
-        newUser.setPhone(userForm.getPhone());
-        newUser.setEmail(userForm.getEmail());
-        newUser.setUserRole(userRole);
-
-        usersRepository.save(newUser);
-        model.addAttribute("signupSuccess", true);
-        return "login";
+            usersRepository.save(newUser);
+            model.addAttribute("signupSuccess", true);
+            return "redirect:/login";
+        }
+        return "signup";
     }
 
     @PreAuthorize("hasRole('ROLE_CSRA')")

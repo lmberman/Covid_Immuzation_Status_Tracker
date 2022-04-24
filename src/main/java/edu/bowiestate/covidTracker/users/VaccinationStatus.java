@@ -12,18 +12,10 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public class VaccinationStatus {
 
-    @Id
-    @TableGenerator(name = "Vaccination_Gen", table = "ID_GEN", pkColumnName = "GEN_NAME", valueColumnName = "GEN_VAL", initialValue = 2, allocationSize = 100)
-    @GeneratedValue(strategy = GenerationType.TABLE,  generator = "Vaccination_Gen")
-    private long id;
+    @EmbeddedId
+    private VaccinationRecordId id;
 
-    @Column(name = "VACCINATED")
-    @Enumerated(EnumType.STRING)
-    private VaccinateStatus vaccinated;
-
-    @Column(name = "VACCINATION_DATE")
-    private Date vaccinationDate;
-
+    @MapsId("userId")
     @ManyToOne
     @JoinColumn(name = "USER_ID", nullable = false)
     private User user;
@@ -36,20 +28,21 @@ public class VaccinationStatus {
     @Column(name = "LAST_MODIFIED_DATE", nullable = false)
     private Date lastModifiedDate;
 
-    public long getId() {
+    public VaccinationStatus() {
+
+    }
+
+    public VaccinationRecordId getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(VaccinationRecordId id) {
         this.id = id;
     }
 
-    public VaccinateStatus getVaccinated() {
-        return vaccinated;
-    }
-
-    public void setVaccinated(VaccinateStatus vaccinated) {
-        this.vaccinated = vaccinated;
+    public VaccinationStatus(User user, Date vaccinationDate, VaccineType vaccineType) {
+        this.user = user;
+        this.id = new VaccinationRecordId(user.getId(), vaccinationDate, vaccineType);
     }
 
     public Date getCreatedDate() {
@@ -69,11 +62,7 @@ public class VaccinationStatus {
     }
 
     public Date getVaccinationDate() {
-        return vaccinationDate;
-    }
-
-    public void setVaccinationDate(Date vaccinationDate) {
-        this.vaccinationDate = vaccinationDate;
+        return id.getVaccinationDate();
     }
 
     public User getUser() {
@@ -82,5 +71,20 @@ public class VaccinationStatus {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public enum VaccineType {
+
+        COMIRNATY_PFIZER_DOSE1("Comirnaty/Pfizer-Dose1"),
+        COMIRNATY_PFIZER_DOSE2("Comirnaty/Pfizer-Dose1"),
+        SPIKEVAX_MODERNA_DOSE1("Spikevax/Moderna-Dose1"),
+        SPIKEVAX_MODERNA_DOSE2("Spikevax/Moderna-Dose2");
+
+        private String name;
+
+        VaccineType(String name){
+            this.name = name;
+        }
+
     }
 }

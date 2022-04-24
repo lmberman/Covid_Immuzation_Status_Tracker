@@ -42,6 +42,7 @@
                         <th scope="col"> Test Date</th>
                         <th scope="col"> Status </th>
                         <th scope="col"> Created Date </th>
+                        <th scope="col"> Last Modified Date </th>
                     </tr>
                     </thead>
                     <tbody>
@@ -49,6 +50,7 @@
                         <td th:text="${testRecord.testDate}"> Some date here</td>
                         <td th:text="${testRecord.status}"> Your Status </td>
                         <td th:text="${testRecord.createdDate}"> Created Date</td>
+                        <td th:text="${testRecord.lastModifiedDate}"> Last Modified Date</td>
                     </tr>
                     </tbody>
                 </table>
@@ -62,12 +64,12 @@
                 <table class="table table-striped table-bordered">
                     <thead class="thead-dark">
                         <th scope="col"> Vaccinated Date</th>
-                        <th scope="col"> Status </th>
+                        <th scope="col"> Vaccine Type </th>
                         <th scope="col"> Created Date </th>
                     </thead>
                     <tbody th:each="vaccinationRecord: ${vaccinationRecords}">
-                        <td th:text="${vaccinationRecord.vaccinationDate}"> Some date here</td>
-                        <td th:text="${vaccinationRecord.vaccinated}"> Your Status </td>
+                        <td th:text="${vaccinationRecord.id.vaccinationDate}"> Some date here</td>
+                        <td th:text="${vaccinationRecord.id.vaccineType}"> Vaccine Type </td>
                         <td th:text="${vaccinationRecord.createdDate}"> Created Date</td>
                     </tbody>
                 </table>

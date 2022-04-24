@@ -28,14 +28,14 @@
             <div class="table-responsive text-center">
                 <table class="table table-striped table-bordered">
                     <thead class="thead-dark">
-                    <th scope="col"> Vaccinated Date</th>
-                    <th scope="col"> Status </th>
-                    <th scope="col"> Created Date </th>
+                        <th scope="col"> Vaccinated Date</th>
+                        <th scope="col"> Vaccine Type</th>
+                        <th scope="col"> Created Date</th>
                     </thead>
                     <tbody th:each="vaccinationRecord: ${vaccinationRecords}">
-                    <td th:text="${vaccinationRecord.vaccinationDate}"> Some date here</td>
-                    <td th:text="${vaccinationRecord.vaccinated}"> Your Status </td>
-                    <td th:text="${vaccinationRecord.createdDate}"> Created Date</td>
+                        <td th:text="${vaccinationRecord.id.vaccinationDate}"> Some date here</td>
+                        <td th:text="${vaccinationRecord.id.vaccineType}"> Vaccine Type</td>
+                        <td th:text="${vaccinationRecord.createdDate}"> Created Date</td>
                     </tbody>
                 </table>
             </div>

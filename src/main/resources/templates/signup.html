@@ -18,14 +18,17 @@
         </div>
     </div>
     <div class="card-body">
-        <form th:action="@{/users/signup}" method="post" th:object="${userForm}">
+        <form th:action="@{/users/signup}" method="post" th:object="${newUserForm}" autocomplete="off" >
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="username"> Username: </label>
-                    <input class="form-control" required id="username" type="text" th:field="*{username}" name="username"/>
-                    <span th:if="${#fields.hasErrors('username')}">
-                        <p th:errors="*{username}"> Invalid Username </p>
-                    </span>
+                    <input class="form-control" required id="username" type="text" th:field="*{username}" name="username" placeholder="ex:lmberman"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('username')}">
+                        <span><p th:errors="*{username}"> Invalid Username </p></span>
+                    </div>
+                    <div class="alert alert-danger" th:if="${userAlreadyExists}">
+                        <span><p> Username already exists </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
@@ -33,96 +36,95 @@
                     <label for="password"> Password: </label>
                     <input required class="form-control" id="password" type="password" th:field="*{password}" name="password"/>
                 </div>
-                <span th:if="${#fields.hasErrors('password')}">
-                    <p th:errors="*{password}"> Invalid Password </p>
-                </span>
+                <div class="alert alert-danger" th:if="${#fields.hasErrors('password')}">
+                    <span><p th:errors="*{password}"> Invalid Password </p></span>
+                </div>
             </div>
             <br/>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="firstname"> Firstname: </label>
-                    <input required class="form-control" id="firstname" type="text" th:field="*{firstname}" name="firstname"/>
-                    <span th:if="${#fields.hasErrors('firstname')}">
-                        <p th:errors="*{firstname}"> Invalid firstname </p>
-                    </span>
-                </div>
-            </div>
-            <div class="input-group mb-3">
-                <div class="form-group">
-                    <label for="middle"> Middle Initial: </label>
-                    <input class="form-control" id="middle" type="text" name="middle"/>
+                    <input required class="form-control" id="firstname" type="text" th:field="*{firstname}" name="firstname" placeholder="ex:Bob"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('firstname')}">
+                        <span><p th:errors="*{firstname}"> Invalid firstname </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="lastname"> Lastname: </label>
-                    <input required class="form-control" id="lastname" type="text" th:field="*{lastname}" name="lastname"/>
-                    <span th:if="${#fields.hasErrors('lastname')}">
-                        <p th:errors="*{lastname}"> Invalid lastname </p>
-                    </span>
+                    <input required class="form-control" id="lastname" type="text" th:field="*{lastname}" name="lastname" placeholder="ex:Ross"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('lastname')}">
+                        <span><p th:errors="*{lastname}"> Invalid lastname </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="address"> Address: </label>
-                    <input required class="form-control" id="address" type="text" th:field="*{address}" name="address"/>
-                    <span th:if="${#fields.hasErrors('address')}">
-                        <p th:errors="*{address}"> Invalid address </p>
-                    </span>
+                    <input required class="form-control" id="address" type="text" th:field="*{address}" name="address" placeholder="ex:2110 Eagle Way"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('address')}">
+                        <span><p th:errors="*{address}"> Invalid address </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="address2"> Address2: </label>
-                    <input type="text" class="form-control" id="address2" th:field="*{address2}" name="address2"/>
-                    <span th:if="${#fields.hasErrors('address2')}">
-                        <p th:errors="*{address2}"> Invalid address2 </p>
-                    </span>
+                    <input type="text" class="form-control" id="address2" th:field="*{address2}" name="address2" placeholder="ex:Apt 801"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('address2')}">
+                        <span><p th:errors="*{address2}"> Invalid address2 </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="city"> City: </label>
-                    <input required class="form-control" id="city" type="text" th:field="*{city}" name="city"/>
-                    <span th:if="${#fields.hasErrors('city')}">
-                        <p th:errors="*{city}"> Invalid city </p>
-                    </span>
+                    <input required class="form-control" id="city" type="text" th:field="*{city}" name="city" placeholder="ex:Los Angeles"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('city')}">
+                        <span><p th:errors="*{city}"> Invalid city </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="state"> State: </label>
-                    <input required class="form-control" id="state" type="text" th:field="*{state}" name="state"/>
-                    <span th:if="${#fields.hasErrors('state')}">
-                        <p th:errors="*{state}"> Invalid state </p>
-                    </span>
+                    <input required class="form-control" id="state" type="text" th:field="*{state}" name="state" placeholder="ex:CA"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('state')}">
+                        <span>
+                            <p th:errors="*{state}"> Invalid state </p>
+                        </span>
+                    </div>
+
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="zip"> Zip: </label>
-                    <input required class="form-control" id="zip" type="text" th:field="*{zip}" name="zip"/>
-                    <span th:if="${#fields.hasErrors('zip')}">
-                        <p th:errors="*{zip}"> Invalid zip </p>
-                    </span>
+                    <input required class="form-control" id="zip" type="text" th:field="*{zip}" name="zip" placeholder="ex:90210"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('zip')}">
+                        <span><p th:errors="*{zip}"> Invalid zip </p></span>
+                    </div>
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="phone"> Phone Number: </label>
-                    <input required class="form-control" id="phone" type="text" th:field="*{phone}" name="phone"/>
-                    <span th:if="${#fields.hasErrors('phone')}">
-                        <p th:errors="*{phone}"> Invalid phone </p>
-                    </span>
+                    <input required class="form-control" id="phone" type="text" th:field="*{phone}" name="phone" placeholder="ex:301-852-6235"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('phone')}">
+                        <span><p th:errors="*{phone}"> Invalid phone </p></span>
+                    </div>
+
                 </div>
             </div>
             <div class="input-group mb-3">
                 <div class="form-group">
                     <label for="email"> Email Address: </label>
-                    <input required class="form-control" id="email" type="text" th:field="*{email}" name="email"/>
-                    <span th:if="${#fields.hasErrors('email')}">
-                        <p th:errors="*{email}"> Invalid email </p>
-                    </span>
+                    <input required class="form-control" id="email" type="text" th:field="*{email}" name="email" placeholder="ex:someone@gmail.com"/>
+                    <div class="alert alert-danger" th:if="${#fields.hasErrors('email')}">
+                        <span><p th:errors="*{email}"> Invalid email </p></span>
+                    </div>
+
                 </div>
             </div>
             <button type="submit" class="btn btn-primary" value="Signup"/> Sign up</button>

@@ -12,7 +12,7 @@ A Java base web application using the Spring Framework for Web Mvc, H2 DB, and U
 ### Requirements
 - [ ] What information are we taking in?
   1. Username and password 
-  2. Name of the Person (First Middle and Last) 
+  2. Name of the Person (First and Last) 
   3. Immunication Status (Yes or No)
   4. Type of Vaccine
   5. Dates of Vaccination
