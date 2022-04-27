@@ -28,7 +28,7 @@ To load the application,
     1. Load it into a java IDE of your choice as a maven java project.
     2. This application uses Java 8 so make sure that version is install on your machine
     3. Create a run execution of the application using the Java Main Class CovidTrackerApplication.java in src/main/java.
-    4. Access the application, open a browser and navigate to localhost:8080/, this will log the login screen.
+    4. Access the application, open a browser and navigate to localhost:9000/, this will log the login screen.
 
 ### Logging In:
 
@@ -87,7 +87,7 @@ their provided ROLE is validated to ensure they are Authorized to access the URL
 attempting to perform, and all data passed to an API via forms or parameters is validated to ensure it matches the structure 
 of the system data and avoid injection attacks.
 
-The H2 Database is embedded and is SQL dialect based. It can be accessed through the localhost:8080/h2-console and is secured using a password 
+The H2 Database is embedded and is SQL dialect based. It can be accessed through the localhost:9000/h2-console and is secured using a password 
 stored in the application.yaml. If this application was real and in project this password would be encrypted or stored in a key manager
 but this suffices for the prototype concept.
 

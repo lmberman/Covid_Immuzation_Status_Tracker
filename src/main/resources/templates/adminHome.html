@@ -46,7 +46,7 @@
                         <td> <a th:href="|/user/${user.id}/immunizationRecords|"> Click for Vaccination Records </a></td>
                         <td> <a th:href="|/user/${user.id}/testResults|"> Click for Covid Test Records </a></td>
                         <td sec:authorize="hasAuthority('ROLE_CSRA')">
-                            <a th:href="|/users/${user.id}/contact|"> Click for Customer Contact Info </a>
+                            <a th:href="|/user/${user.id}/contact|"> Click for Customer Contact Info </a>
                         </td>
                     </tr>
                     </tbody>

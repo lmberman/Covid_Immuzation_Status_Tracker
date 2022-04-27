@@ -4,20 +4,18 @@ import edu.bowiestate.covidTracker.role.UserRole;
 import edu.bowiestate.covidTracker.role.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("users")
 public class UserRestController {
 
     @Autowired
@@ -29,13 +27,13 @@ public class UserRestController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/new")
+    @GetMapping("/user/new")
     public String signup(Model model){
         model.addAttribute("newUserForm", new NewUserForm());
         return "signup";
     }
 
-    @PostMapping("/signup")
+    @PostMapping("/user/signup")
     public String createUser(@Valid NewUserForm newUserForm, BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
             return "signup";
@@ -66,7 +64,7 @@ public class UserRestController {
     }
 
     @PreAuthorize("hasRole('ROLE_CSRA')")
-    @GetMapping("/{id}/contact")
+    @GetMapping("user/{id}/contact")
     public String findSingleUserByName(@PathVariable("id") Long id, Model model) {
         Optional<User> user = usersRepository.findById(id);
         if(!user.isPresent()){
