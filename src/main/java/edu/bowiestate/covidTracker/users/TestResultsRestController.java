@@ -1,5 +1,7 @@
 package edu.bowiestate.covidTracker.users;
 
+import edu.bowiestate.covidTracker.AccessAudit;
+import edu.bowiestate.covidTracker.AccessAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -15,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class TestResultsRestController {
+public class TestResultsRestController{
 
     @Autowired
     private TestResultsRepository testResultsRepository;
@@ -23,23 +25,31 @@ public class TestResultsRestController {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private AccessAuditRepository accessAuditRepository;
+
     private SimpleDateFormat formatter = new SimpleDateFormat(
             "dd/MM/yyyy");
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @GetMapping("/user/testResults")
-    public String getImmunizationRecords(Model model) {
+    public String getImmunizationRecords(Model model, Principal principal) {
+        User thisUser = usersRepository.findByUsername(principal.getName());
+        logAudit(AccessAudit.ActionType.VIEW_TEST, thisUser, thisUser);
         model.addAttribute("today", new Date());
         return "testResults";
     }
 
     @PreAuthorize("hasAnyRole('ROLE_CSRA','ROLE_CEO','ROLE_EMPLOYEE')")
     @GetMapping("/user/{id}/testResults")
-    public String getImmunizationRecords(@PathVariable("id") long id, Model model) {
-        if (!usersRepository.findById(id).isPresent()) {
+    public String getImmunizationRecords(@PathVariable("id") long id, Model model, Principal principal) {
+        Optional<User> recordOwner = usersRepository.findById(id);
+        User currentUser = usersRepository.findByUsername(principal.getName());
+        if (!recordOwner.isPresent()) {
             model.addAttribute("error", "User unknown");
             return "adminHome";
         } else {
+            logAudit(AccessAudit.ActionType.VIEW_TEST, recordOwner.get(), currentUser);
             model.addAttribute("testRecords", testResultsRepository.findByIdUserId(id));
             return "adminViewUserTestResultRecords";
         }
@@ -75,6 +85,7 @@ public class TestResultsRestController {
                 } else {
                     testResultsRepository.save(new TestResult(user, testResultsInput.getStatus(), testResultsInput.getTestDate()));
                 }
+                logAudit(AccessAudit.ActionType.ADD_TEST, user, user);
                 model.addAttribute("success", true);
             } else {
                 // or throw error
@@ -87,4 +98,9 @@ public class TestResultsRestController {
 
 
     }
+    private void logAudit(AccessAudit.ActionType actionType, User forUser, User performedBy) {
+        AccessAudit audit = new AccessAudit(actionType, forUser.getUsername(), performedBy.getUsername());
+        accessAuditRepository.save(audit);
+    }
+
 }

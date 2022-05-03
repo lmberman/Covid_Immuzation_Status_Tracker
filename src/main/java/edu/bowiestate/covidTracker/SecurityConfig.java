@@ -26,9 +26,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     DataSource dataSource;
 
-//    @Autowired
-//    private UserDetailsService userDetailsService;
-
     @Override
     public void configure(WebSecurity webSecurity) throws Exception {
         webSecurity.ignoring().antMatchers("/h2-console/**");
@@ -52,11 +49,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin()
                     .loginPage("/login")
                     .defaultSuccessUrl("/home")
+//                    .successHandler(new LoginSuccessHandler())
                     .permitAll()
                 .and()
                 .logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 .logoutSuccessUrl("/")
+//                .addLogoutHandler(new LogoutSuccessHandler())
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
 

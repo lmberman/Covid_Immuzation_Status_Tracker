@@ -1,12 +1,17 @@
 package edu.bowiestate.covidTracker.users;
 
 import edu.bowiestate.covidTracker.role.UserRole;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name="USERS")
 public class User implements Serializable {
@@ -53,6 +58,14 @@ public class User implements Serializable {
     @ManyToOne
     @JoinColumn(name = "role_id")
     private UserRole userRole;
+
+    @CreatedDate
+    @Column(name = "CREATED_DATE", nullable = false)
+    private Date createdDate;
+
+    @LastModifiedDate
+    @Column(name = "LAST_MODIFIED_DATE", nullable = false)
+    private Date lastModifiedDate;
 
     // add created date and last modified date to this table
 
@@ -158,6 +171,22 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(Date lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 
     @Override

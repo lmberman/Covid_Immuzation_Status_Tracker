@@ -1,5 +1,7 @@
 package edu.bowiestate.covidTracker.users;
 
+import edu.bowiestate.covidTracker.AccessAudit;
+import edu.bowiestate.covidTracker.AccessAuditRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -13,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class VaccinationStatusRestController {
+public class VaccinationStatusRestController{
 
     @Autowired
     private VaccinationStatusRepository vaccinationStatusRepository;
@@ -21,12 +23,17 @@ public class VaccinationStatusRestController {
     @Autowired
     private UsersRepository usersRepository;
 
+    @Autowired
+    private AccessAuditRepository accessAuditRepository;
+
     private SimpleDateFormat formatter = new SimpleDateFormat(
             "dd/MM/yyyy");
 
     @PreAuthorize("hasRole('ROLE_CUSTOMER')")
     @GetMapping(value = "/user/immunizationRecords")
-    public String getImmunizationPage(Model model) {
+    public String getImmunizationPage(Model model, Principal principal) {
+        User user = usersRepository.findByUsername(principal.getName());
+        logAudit(AccessAudit.ActionType.VIEW_VACCINE, user, user);
         model.addAttribute("today", new Date());
         model.addAttribute("vaccineTypes", VaccinationStatus.VaccineType.values());
         return "immunizationRecords";
@@ -48,6 +55,7 @@ public class VaccinationStatusRestController {
                     .collect(Collectors.toList())
                     .size() < 4) {
                 vaccinationStatusRepository.save(new VaccinationStatus(user, immunizationInput.getVaccinationDate(), immunizationInput.getVaccineType()));
+                logAudit(AccessAudit.ActionType.ADD_VACCINE, user, user);
                 model.addAttribute("success", true);
             } else {
                 model.addAttribute("dailyLimitExceeded", true);
@@ -58,22 +66,30 @@ public class VaccinationStatusRestController {
     }
 
     @PutMapping(value = "/user/vaccinateUpdate")
-    public void updateUserStatus(@RequestParam VaccinationStatus vaccinationStatus) {
+    public void updateUserStatus(@RequestParam VaccinationStatus vaccinationStatus, Principal principal) {
+        User user = usersRepository.findByUsername(principal.getName());
+        logAudit(AccessAudit.ActionType.UPDATE_VACCINE, user, user);
         vaccinationStatusRepository.save(vaccinationStatus);
     }
 
     @PreAuthorize("hasAnyRole('ROLE_CSRA','ROLE_CEO','ROLE_EMPLOYEE')")
     @GetMapping("/user/{id}/immunizationRecords")
-    public String getImmunizationRecords(@PathVariable("id") long id, Model model) {
-        if (!usersRepository.findById(id).isPresent()) {
+    public String getImmunizationRecords(@PathVariable("id") long id, Model model, Principal principal) {
+        Optional<User> recordOwner = usersRepository.findById(id);
+        if (!recordOwner.isPresent()) {
             model.addAttribute("error", "User unknown");
             return "adminHome";
         } else {
+            User user = usersRepository.findByUsername(principal.getName());
+            logAudit(AccessAudit.ActionType.VIEW_VACCINE, recordOwner.get(), user);
             model.addAttribute("vaccinationRecords", vaccinationStatusRepository.findByUserId(id));
             return "adminViewUserVaccineRecords";
         }
 
     }
 
-
+    private void logAudit(AccessAudit.ActionType actionType, User forUser, User performedBy) {
+        AccessAudit audit = new AccessAudit(actionType, forUser.getUsername(), performedBy.getUsername());
+        accessAuditRepository.save(audit);
+    }
 }

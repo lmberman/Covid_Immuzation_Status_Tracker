@@ -1,5 +1,7 @@
 package edu.bowiestate.covidTracker.users;
 
+import edu.bowiestate.covidTracker.AccessAudit;
+import edu.bowiestate.covidTracker.AccessAuditRepository;
 import edu.bowiestate.covidTracker.role.UserRole;
 import edu.bowiestate.covidTracker.role.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 import java.util.Optional;
 
 @Controller
@@ -26,6 +29,9 @@ public class UserRestController {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private AccessAuditRepository accessAuditRepository;
 
     @GetMapping("/user/new")
     public String signup(Model model){
@@ -41,6 +47,7 @@ public class UserRestController {
         if(usersRepository.findByUsername(newUserForm.getUsername()) != null) {
             model.addAttribute("userAlreadyExists", true);
         } else {
+
             UserRole userRole = userRoleRepository.findByRole("CUSTOMER");
             User newUser = new User();
             newUser.setUsername(newUserForm.getUsername());
@@ -56,7 +63,8 @@ public class UserRestController {
             newUser.setEmail(newUserForm.getEmail());
             newUser.setUserRole(userRole);
 
-            usersRepository.save(newUser);
+            User user = usersRepository.save(newUser);
+            logAudit(AccessAudit.ActionType.CREATE_USER, user, user);
             model.addAttribute("signupSuccess", true);
             return "redirect:/login";
         }
@@ -65,12 +73,14 @@ public class UserRestController {
 
     @PreAuthorize("hasRole('ROLE_CSRA')")
     @GetMapping("user/{id}/contact")
-    public String findSingleUserByName(@PathVariable("id") Long id, Model model) {
+    public String findSingleUserByName(@PathVariable("id") Long id, Model model, Principal principal) {
         Optional<User> user = usersRepository.findById(id);
         if(!user.isPresent()){
             model.addAttribute("error", "User unknown");
             return "adminHome";
         } else {
+            User loggedInUser = usersRepository.findByUsername(principal.getName());
+            logAudit(AccessAudit.ActionType.VIEW_CONTACT, user.get(), loggedInUser);
             User existingUser = user.get();
             UserContactOutput userContactOutput = new UserContactOutput();
             userContactOutput.setFirstname(existingUser.getFirstname());
@@ -85,5 +95,10 @@ public class UserRestController {
             model.addAttribute("contact",userContactOutput);
             return "adminViewUserContactInfo";
         }
+    }
+
+    private void logAudit(AccessAudit.ActionType actionType, User forUser, User performedBy) {
+        AccessAudit audit = new AccessAudit(actionType, forUser.getUsername(), performedBy.getUsername());
+        accessAuditRepository.save(audit);
     }
 }

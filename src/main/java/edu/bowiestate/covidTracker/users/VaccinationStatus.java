@@ -1,5 +1,6 @@
 package edu.bowiestate.covidTracker.users;
 
+import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -7,9 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import java.util.Date;
 
+@EntityListeners(AuditingEntityListener.class)
 @Entity
 @Table(name = "VACCINATION_STATUS")
-@EntityListeners(AuditingEntityListener.class)
 public class VaccinationStatus {
 
     @EmbeddedId

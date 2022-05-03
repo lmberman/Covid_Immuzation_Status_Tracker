@@ -17,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller
-public class HomeController {
+public class HomeController{
 
     @Autowired
     private UsersRepository usersRepository;
@@ -40,17 +40,21 @@ public class HomeController {
         Optional<GrantedAuthority> loggedInUserRole = (Optional<GrantedAuthority>) authentication.getAuthorities().stream().findFirst();
         if(loggedInUserRole.isPresent()) {
             String role = loggedInUserRole.get().getAuthority();
-            if(role.equals(User.Role.ROLE_CUSTOMER.name())){
-                User user = usersRepository.findByUsername(authentication.getName());
-                model.addAttribute("name", user.getFirstname());
-                model.addAttribute("testRecords", testResultsRepository.findByIdUserId(user.getId()));
-                model.addAttribute("vaccinationRecords", vaccinationStatusRepository.findByUserId(user.getId()));
-                return "home";
-            } else {
-                List<User> customers = usersRepository.findAll().stream().filter(user-> user.getUserRole().getRole().equalsIgnoreCase(User.Role.ROLE_CUSTOMER.getNameWithoutPrefix())).collect(Collectors.toList());
-                model.addAttribute("users",customers);
-                return "adminHome";
+            User user = usersRepository.findByUsername(authentication.getName());
+            if(user != null) {
+
+                if(role.equals(User.Role.ROLE_CUSTOMER.name())){
+                    model.addAttribute("name", user.getFirstname());
+                    model.addAttribute("testRecords", testResultsRepository.findByIdUserId(user.getId()));
+                    model.addAttribute("vaccinationRecords", vaccinationStatusRepository.findByUserId(user.getId()));
+                    return "home";
+                } else {
+                    List<User> customers = usersRepository.findAll().stream().filter(customer-> customer.getUserRole().getRole().equalsIgnoreCase(User.Role.ROLE_CUSTOMER.getNameWithoutPrefix())).collect(Collectors.toList());
+                    model.addAttribute("users",customers);
+                    return "adminHome";
+                }
             }
+
         }
         return null;
     }
